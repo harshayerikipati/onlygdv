@@ -3,6 +3,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { StatusBar } from "expo-status-bar";
 
 import LoginScreen from "./src/screens/LoginScreen";
+import SignupScreen from "./src/screens/SignupScreen";
 import HomeScreen from "./src/screens/HomeScreen";
 import OrderDetailScreen from "./src/screens/OrderDetailScreen";
 import EarningsScreen from "./src/screens/EarningsScreen";
@@ -15,6 +16,7 @@ export default function App() {
       <StatusBar style="dark" />
       <Stack.Navigator initialRouteName="Login">
         <Stack.Screen name="Login" component={LoginScreen} options={{ title: "OnlyGDV Delivery" }} />
+        <Stack.Screen name="Signup" component={SignupScreen} options={{ title: "Rider Signup" }} />
         <Stack.Screen name="Home" component={HomeScreen} options={{ title: "My Deliveries" }} />
         <Stack.Screen name="OrderDetail" component={OrderDetailScreen} options={{ title: "Delivery" }} />
         <Stack.Screen name="Earnings" component={EarningsScreen} options={{ title: "Earnings" }} />

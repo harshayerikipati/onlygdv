@@ -5,10 +5,6 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "userInterfaceStyle": "light",
-    "splash": {
-      "backgroundColor": "#ffffff",
-      "resizeMode": "contain"
-    },
     "android": {
       "package": "com.onlygdv.customer",
       "permissions": [
@@ -18,10 +14,9 @@
     "ios": {
       "bundleIdentifier": "com.onlygdv.customer"
     },
-    "extra": {
-      "eas": {
-        "projectId": "ff755f7c-26bd-4ba3-b557-84ed81c5ce6d"
-      }
+    "splash": {
+      "backgroundColor": "#ffffff",
+      "resizeMode": "contain"
     }
   }
 }

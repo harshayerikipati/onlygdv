@@ -6,8 +6,17 @@
     "orientation": "portrait",
     "android": {
       "package": "com.onlygdv.delivery",
-      "permissions": ["ACCESS_FINE_LOCATION", "ACCESS_BACKGROUND_LOCATION"]
+      "permissions": [
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_BACKGROUND_LOCATION"
+      ]
     },
-    "ios": { "bundleIdentifier": "com.onlygdv.delivery" }
+    "ios": {
+      "bundleIdentifier": "com.onlygdv.delivery"
+    },
+    "splash": {
+      "backgroundColor": "#ffffff",
+      "resizeMode": "contain"
+    }
   }
 }

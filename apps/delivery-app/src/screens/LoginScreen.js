@@ -37,10 +37,11 @@ export default function LoginScreen({ navigation }) {
         <Text style={styles.buttonText}>{loading ? "Logging in..." : "Log In"}</Text>
       </TouchableOpacity>
 
-      <Text style={styles.hint}>
-        New rider? Sign up via POST /api/auth/signup with role: "DELIVERY". Your account needs
-        Admin approval before you can go online.
-      </Text>
+      <TouchableOpacity onPress={() => navigation.navigate("Signup")}>
+        <Text style={styles.link}>New rider? Register here</Text>
+      </TouchableOpacity>
+
+      <Text style={styles.hint}>Your account needs Admin approval before you can go online.</Text>
     </View>
   );
 }
@@ -52,5 +53,6 @@ const styles = StyleSheet.create({
   input: { borderWidth: 1, borderColor: "#ddd", borderRadius: 8, padding: 12, marginBottom: 12 },
   button: { backgroundColor: "#c9540c", padding: 14, borderRadius: 8, marginTop: 8 },
   buttonText: { color: "#fff", textAlign: "center", fontWeight: "600" },
-  hint: { marginTop: 24, fontSize: 12, color: "#999", textAlign: "center" },
+  link: { textAlign: "center", color: "#c9540c", marginTop: 20 },
+  hint: { marginTop: 16, fontSize: 12, color: "#999", textAlign: "center" },
 });

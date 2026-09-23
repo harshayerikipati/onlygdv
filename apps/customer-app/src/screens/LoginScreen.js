@@ -46,10 +46,9 @@ export default function LoginScreen({ navigation }) {
         <Text style={styles.buttonText}>{loading ? "Logging in..." : "Log In"}</Text>
       </TouchableOpacity>
 
-      <Text style={styles.hint}>
-        New here? Use the signup API endpoint (POST /api/auth/signup) — a signup screen can be
-        added following this same pattern.
-      </Text>
+      <TouchableOpacity onPress={() => navigation.navigate("Signup")}>
+        <Text style={styles.link}>New here? Create an account</Text>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -67,5 +66,5 @@ const styles = StyleSheet.create({
   },
   button: { backgroundColor: "#1a7f37", padding: 14, borderRadius: 8, marginTop: 8 },
   buttonText: { color: "#fff", textAlign: "center", fontWeight: "600" },
-  hint: { marginTop: 24, fontSize: 12, color: "#999", textAlign: "center" },
+  link: { textAlign: "center", color: "#1a7f37", marginTop: 24 },
 });

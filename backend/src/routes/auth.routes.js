@@ -15,6 +15,8 @@ const signupSchema = z.object({
   // extra fields used when role is VENDOR
   businessName: z.string().optional(),
   vendorType: z.enum(["SHOP", "RESTAURANT", "GROCERY"]).optional(),
+  // extra field used when role is DELIVERY
+  vehicleType: z.string().optional(),
 });
 
 function signToken(user) {
@@ -50,7 +52,7 @@ router.post("/signup", async (req, res, next) => {
         },
       });
     } else if (data.role === "DELIVERY") {
-      await prisma.deliveryBoy.create({ data: { userId: user.id } });
+      await prisma.deliveryBoy.create({ data: { userId: user.id, vehicleType: data.vehicleType } });
     }
 
     const token = signToken(user);
@@ -64,6 +66,9 @@ router.post("/signup", async (req, res, next) => {
 router.post("/login", async (req, res, next) => {
   try {
     const { phone, password } = req.body;
+    if (!phone || !password) {
+      return res.status(400).json({ error: "Phone and password are required" });
+    }
     const user = await prisma.user.findUnique({ where: { phone } });
     if (!user) return res.status(401).json({ error: "Invalid phone or password" });
 

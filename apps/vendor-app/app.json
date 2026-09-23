@@ -4,7 +4,15 @@
     "slug": "onlygdv-vendor",
     "version": "1.0.0",
     "orientation": "portrait",
-    "android": { "package": "com.onlygdv.vendor" },
-    "ios": { "bundleIdentifier": "com.onlygdv.vendor" }
+    "android": {
+      "package": "com.onlygdv.vendor"
+    },
+    "ios": {
+      "bundleIdentifier": "com.onlygdv.vendor"
+    },
+    "splash": {
+      "backgroundColor": "#ffffff",
+      "resizeMode": "contain"
+    }
   }
 }

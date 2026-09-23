@@ -1,7 +1,7 @@
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export const API_URL = "https://onlygdv-production.up.railway.app"; // use LAN IP for physical devices
+export const API_URL = "http://localhost:4000"; // use LAN IP for physical devices
 
 const client = axios.create({ baseURL: API_URL });
 
