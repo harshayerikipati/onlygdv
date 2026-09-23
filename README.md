@@ -4,13 +4,31 @@ Multi-vendor Ecommerce + Food + Grocery delivery platform.
 
 ```
 onlygdv/
-├── backend/            Node.js + Express + Prisma + PostgreSQL API (used by all apps)
+├── backend/            Node.js + Express + Prisma + PostgreSQL API (used by everything below)
 ├── apps/
-│   ├── customer-app/   React Native (Expo) — end customers
-│   ├── vendor-app/     React Native (Expo) — shop/restaurant owners
-│   └── delivery-app/   React Native (Expo) — delivery riders
-└── web-admin/          React + Vite — admin panel (browser)
+│   ├── app/             ⭐ THE SINGLE APP TO PUBLISH — role picker (Customer/Vendor/Delivery) in one Play Store listing
+│   ├── customer-app/    Legacy standalone app — kept for reference, no longer the recommended path
+│   ├── vendor-app/      Legacy standalone app — kept for reference, no longer the recommended path
+│   └── delivery-app/    Legacy standalone app — kept for reference, no longer the recommended path
+└── web-admin/          React + Vite — admin panel (browser), controls vendors, riders, and orders
 ```
+
+## The single app (`apps/app`)
+
+This is what you publish to Play Store — **one app, one listing**. On first launch, the user
+sees a role picker: "I'm a Customer" / "I'm a Shop or Restaurant Owner" / "I'm a Delivery Rider".
+Whichever they tap takes them into a login/signup flow for that role, and from then on the app
+remembers their session and drops them straight into that role's screens on future launches —
+no picker shown again unless they log out.
+
+Under the hood, this still uses the exact same backend and the exact same `role` field on the
+`User` table (`CUSTOMER` / `VENDOR` / `DELIVERY`) as before — the change is entirely in the
+mobile app's UI/navigation, not the data model. If someone tries to log into the "Customer"
+option with an account that's actually registered as a Vendor, the app tells them and sends
+them back to pick the right option.
+
+The `customer-app`, `vendor-app`, and `delivery-app` folders are left in place in case you want
+to reference their original code, but `apps/app` is the one to build and publish going forward.
 
 ## Quick start
 

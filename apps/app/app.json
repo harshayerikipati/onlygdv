@@ -1,0 +1,20 @@
+{
+  "expo": {
+    "name": "OnlyGDV",
+    "slug": "onlygdv-app",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "backgroundColor": "#ffffff",
+      "resizeMode": "contain"
+    },
+    "android": {
+      "package": "com.onlygdv.app",
+      "permissions": ["ACCESS_FINE_LOCATION"]
+    },
+    "ios": {
+      "bundleIdentifier": "com.onlygdv.app"
+    }
+  }
+}
