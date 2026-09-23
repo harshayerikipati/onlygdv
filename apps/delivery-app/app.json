@@ -1,0 +1,13 @@
+{
+  "expo": {
+    "name": "OnlyGDV Delivery",
+    "slug": "onlygdv-delivery",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "android": {
+      "package": "com.onlygdv.delivery",
+      "permissions": ["ACCESS_FINE_LOCATION", "ACCESS_BACKGROUND_LOCATION"]
+    },
+    "ios": { "bundleIdentifier": "com.onlygdv.delivery" }
+  }
+}
