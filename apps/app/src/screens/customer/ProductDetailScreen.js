@@ -31,13 +31,13 @@ export default function ProductDetailScreen({ route, navigation }) {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 16, backgroundColor: "#fff" },
+  container: { flex: 1, padding: 16, backgroundColor: COLORS.screenBg },
   image: { width: "100%", height: 220, borderRadius: 10, marginBottom: 16 },
   imagePlaceholder: { backgroundColor: "#ddd" },
   name: { fontSize: 22, fontWeight: "700" },
   vendor: { color: "#888", marginTop: 4 },
-  price: { fontSize: 20, color: "#1a7f37", fontWeight: "700", marginTop: 8 },
+  price: { fontSize: 20, color: "#FF3E9D", fontWeight: "700", marginTop: 8 },
   desc: { marginTop: 12, color: "#444", lineHeight: 20 },
-  button: { backgroundColor: "#1a7f37", padding: 14, borderRadius: 8, marginTop: 24 },
+  button: { backgroundColor: "#FF3E9D", padding: 14, borderRadius: 8, marginTop: 24 },
   buttonText: { color: "#fff", textAlign: "center", fontWeight: "600" },
 });

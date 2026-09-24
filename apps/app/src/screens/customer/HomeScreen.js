@@ -3,6 +3,8 @@ import { View, Text, FlatList, TouchableOpacity, StyleSheet, Image, ActivityIndi
 import client from "../../api/client";
 import { useCart } from "../../context/CartContext";
 import { useAuth } from "../../context/AuthContext";
+import { confirmLogout } from "../../utils/confirmLogout";
+import { COLORS } from "../../theme";
 
 export default function HomeScreen({ navigation }) {
   const [products, setProducts] = useState([]);
@@ -16,14 +18,14 @@ export default function HomeScreen({ navigation }) {
 
   if (loading) {
     return (
-      <View style={styles.center}>
-        <ActivityIndicator size="large" color="#1a7f37" />
+      <View style={[styles.center, { backgroundColor: COLORS.screenBg }]}>
+        <ActivityIndicator size="large" color={COLORS.customer} />
       </View>
     );
   }
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, backgroundColor: COLORS.screenBg }}>
       <View style={styles.topBar}>
         <TouchableOpacity onPress={() => navigation.navigate("Cart")}>
           <Text style={styles.cartLink}>Cart ({items.length})</Text>
@@ -31,7 +33,7 @@ export default function HomeScreen({ navigation }) {
         <TouchableOpacity onPress={() => navigation.navigate("Orders")}>
           <Text style={styles.cartLink}>My Orders</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={logout}>
+        <TouchableOpacity onPress={() => confirmLogout(logout)}>
           <Text style={styles.logout}>Log out</Text>
         </TouchableOpacity>
       </View>
@@ -62,14 +64,14 @@ export default function HomeScreen({ navigation }) {
 
 const styles = StyleSheet.create({
   center: { flex: 1, justifyContent: "center", alignItems: "center" },
-  topBar: { flexDirection: "row", justifyContent: "space-between", padding: 16, borderBottomWidth: 1, borderColor: "#eee" },
-  cartLink: { color: "#1a7f37", fontWeight: "600" },
-  logout: { color: "#999" },
-  empty: { textAlign: "center", color: "#999", marginTop: 40 },
-  card: { flexDirection: "row", backgroundColor: "#f8f8f8", borderRadius: 10, padding: 12, marginBottom: 12, alignItems: "center" },
-  image: { width: 60, height: 60, borderRadius: 8, marginRight: 12 },
-  imagePlaceholder: { backgroundColor: "#ddd" },
+  topBar: { flexDirection: "row", justifyContent: "space-between", padding: 16, borderBottomWidth: 1, borderColor: COLORS.border },
+  cartLink: { color: COLORS.customer, fontWeight: "600" },
+  logout: { color: COLORS.muted },
+  empty: { textAlign: "center", color: COLORS.muted, marginTop: 40 },
+  card: { flexDirection: "row", backgroundColor: COLORS.white, borderRadius: 14, padding: 12, marginBottom: 12, alignItems: "center" },
+  image: { width: 60, height: 60, borderRadius: 10, marginRight: 12 },
+  imagePlaceholder: { backgroundColor: COLORS.border },
   name: { fontWeight: "600", fontSize: 15 },
   vendor: { color: "#888", fontSize: 12 },
-  price: { color: "#1a7f37", fontWeight: "700", marginTop: 4 },
+  price: { color: COLORS.customer, fontWeight: "700", marginTop: 4 },
 });

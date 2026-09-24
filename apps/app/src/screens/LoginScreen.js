@@ -1,17 +1,20 @@
 import { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from "react-native";
+import { Text, TextInput, TouchableOpacity, StyleSheet, Alert, KeyboardAvoidingView, Platform } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 import client from "../api/client";
 import { useAuth } from "../context/AuthContext";
+import { COLORS, roleColor } from "../theme";
 
 const ROLE_META = {
-  CUSTOMER: { label: "Customer", color: "#1a7f37" },
-  VENDOR: { label: "Vendor", color: "#1a4d7f" },
-  DELIVERY: { label: "Delivery Rider", color: "#c9540c" },
+  CUSTOMER: { label: "Customer", emoji: "🛍️" },
+  VENDOR: { label: "Vendor", emoji: "🏪" },
+  DELIVERY: { label: "Delivery Rider", emoji: "🛵" },
 };
 
 export default function LoginScreen({ route, navigation }) {
   const { role } = route.params;
   const meta = ROLE_META[role];
+  const color = roleColor(role);
   const { login } = useAuth();
 
   const [phone, setPhone] = useState("");
@@ -20,7 +23,7 @@ export default function LoginScreen({ route, navigation }) {
 
   async function handleLogin() {
     if (!phone || !password) {
-      Alert.alert("Missing info", "Enter your phone and password.");
+      Alert.alert("Oops", "Pop in your phone and password first 👀");
       return;
     }
     setLoading(true);
@@ -28,14 +31,12 @@ export default function LoginScreen({ route, navigation }) {
       const { data } = await client.post("/api/auth/login", { phone, password });
       if (data.user.role !== role) {
         Alert.alert(
-          "Wrong account type",
-          `This account is registered as ${data.user.role.toLowerCase()}, not ${role.toLowerCase()}. Go back and pick the right option.`
+          "Wrong tab bestie",
+          `This account is a ${data.user.role.toLowerCase()}, not a ${role.toLowerCase()}. Go back and pick the right one.`
         );
         return;
       }
       await login(data.token, data.user);
-      // No manual navigation needed — AuthContext change re-renders the root
-      // navigator straight into the correct role's screens.
     } catch (err) {
       Alert.alert("Login failed", err.response?.data?.error || "Check your credentials");
     } finally {
@@ -44,45 +45,57 @@ export default function LoginScreen({ route, navigation }) {
   }
 
   return (
-    <View style={styles.container}>
-      <Text style={[styles.title, { color: meta.color }]}>{meta.label} Login</Text>
+    <LinearGradient colors={[COLORS.bgGradientTop, COLORS.bgGradientBottom]} style={styles.container}>
+      <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : undefined}>
+        <Text style={styles.emoji}>{meta.emoji}</Text>
+        <Text style={[styles.title, { color }]}>{meta.label} Login</Text>
 
-      <TextInput
-        style={styles.input}
-        placeholder="Phone number"
-        keyboardType="phone-pad"
-        value={phone}
-        onChangeText={setPhone}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Password"
-        secureTextEntry
-        value={password}
-        onChangeText={setPassword}
-      />
+        <TextInput
+          style={styles.input}
+          placeholder="Phone number"
+          placeholderTextColor={COLORS.muted}
+          keyboardType="phone-pad"
+          value={phone}
+          onChangeText={setPhone}
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Password"
+          placeholderTextColor={COLORS.muted}
+          secureTextEntry
+          value={password}
+          onChangeText={setPassword}
+        />
 
-      <TouchableOpacity style={[styles.button, { backgroundColor: meta.color }]} onPress={handleLogin} disabled={loading}>
-        <Text style={styles.buttonText}>{loading ? "Logging in..." : "Log In"}</Text>
-      </TouchableOpacity>
+        <TouchableOpacity style={[styles.button, { backgroundColor: color }]} onPress={handleLogin} disabled={loading}>
+          <Text style={styles.buttonText}>{loading ? "logging in..." : "Log In"}</Text>
+        </TouchableOpacity>
 
-      <TouchableOpacity onPress={() => navigation.navigate("Signup", { role })}>
-        <Text style={[styles.link, { color: meta.color }]}>New here? Create an account</Text>
-      </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate("Signup", { role })}>
+          <Text style={[styles.link, { color }]}>new here? create an account →</Text>
+        </TouchableOpacity>
 
-      <TouchableOpacity onPress={() => navigation.navigate("RoleSelect")}>
-        <Text style={styles.back}>← Choose a different role</Text>
-      </TouchableOpacity>
-    </View>
+        <TouchableOpacity onPress={() => navigation.navigate("RoleSelect")}>
+          <Text style={styles.back}>← pick a different role</Text>
+        </TouchableOpacity>
+      </KeyboardAvoidingView>
+    </LinearGradient>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, justifyContent: "center", padding: 24, backgroundColor: "#fff" },
-  title: { fontSize: 26, fontWeight: "700", textAlign: "center", marginBottom: 28 },
-  input: { borderWidth: 1, borderColor: "#ddd", borderRadius: 8, padding: 12, marginBottom: 12 },
-  button: { padding: 14, borderRadius: 8, marginTop: 8 },
-  buttonText: { color: "#fff", textAlign: "center", fontWeight: "600" },
-  link: { textAlign: "center", marginTop: 20, fontWeight: "600" },
-  back: { textAlign: "center", marginTop: 16, color: "#999" },
+  container: { flex: 1, justifyContent: "center", padding: 24 },
+  emoji: { fontSize: 44, textAlign: "center", marginBottom: 8 },
+  title: { fontSize: 24, fontWeight: "800", textAlign: "center", marginBottom: 28 },
+  input: {
+    backgroundColor: COLORS.white,
+    borderRadius: 14,
+    padding: 14,
+    marginBottom: 12,
+    fontSize: 15,
+  },
+  button: { padding: 15, borderRadius: 14, marginTop: 8 },
+  buttonText: { color: "#fff", textAlign: "center", fontWeight: "700", fontSize: 15 },
+  link: { textAlign: "center", marginTop: 22, fontWeight: "700" },
+  back: { textAlign: "center", marginTop: 16, color: COLORS.muted },
 });

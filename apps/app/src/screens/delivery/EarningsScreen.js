@@ -26,7 +26,7 @@ export default function EarningsScreen() {
 
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 24, alignItems: "center", marginTop: 40 },
-  big: { fontSize: 40, fontWeight: "800", color: "#c9540c" },
+  big: { fontSize: 40, fontWeight: "800", color: "#00C2A8" },
   label: { color: "#666", marginTop: 8 },
   note: { marginTop: 40, color: "#999", fontSize: 12, textAlign: "center", lineHeight: 18 },
 });

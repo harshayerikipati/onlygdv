@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import client from "../../api/client";
 import { useAuth } from "../../context/AuthContext";
+import { confirmLogout } from "../../utils/confirmLogout";
 
 export default function DashboardScreen({ navigation }) {
   const [vendor, setVendor] = useState(null);
@@ -18,7 +19,7 @@ export default function DashboardScreen({ navigation }) {
           <Text style={styles.name}>{vendor?.businessName || "Your store"}</Text>
           <Text style={styles.status}>Status: {vendor?.status || "..."}</Text>
         </View>
-        <TouchableOpacity onPress={logout}>
+        <TouchableOpacity onPress={() => confirmLogout(logout)}>
           <Text style={styles.logout}>Log out</Text>
         </TouchableOpacity>
       </View>
@@ -41,12 +42,12 @@ export default function DashboardScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 20, backgroundColor: "#fff" },
+  container: { flex: 1, padding: 20, backgroundColor: COLORS.screenBg },
   topBar: { flexDirection: "row", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 24 },
   name: { fontSize: 24, fontWeight: "700" },
   status: { color: "#888", marginTop: 4, textTransform: "capitalize" },
   logout: { color: "#999" },
   card: { backgroundColor: "#f2f6fa", borderRadius: 10, padding: 18, marginBottom: 14 },
-  cardTitle: { fontSize: 16, fontWeight: "700", color: "#1a4d7f" },
+  cardTitle: { fontSize: 16, fontWeight: "700", color: "#7C4DFF" },
   cardSub: { color: "#666", marginTop: 4 },
 });

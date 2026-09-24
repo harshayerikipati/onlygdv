@@ -15,8 +15,11 @@ const signupSchema = z.object({
   // extra fields used when role is VENDOR
   businessName: z.string().optional(),
   vendorType: z.enum(["SHOP", "RESTAURANT", "GROCERY"]).optional(),
-  // extra field used when role is DELIVERY
+  address: z.string().optional(),
+  // extra fields used when role is DELIVERY
   vehicleType: z.string().optional(),
+  vehicleNumber: z.string().optional(),
+  licenseNumber: z.string().optional(),
 });
 
 function signToken(user) {
@@ -49,10 +52,20 @@ router.post("/signup", async (req, res, next) => {
           userId: user.id,
           businessName: data.businessName || data.name,
           type: data.vendorType || "SHOP",
+          address: data.address,
         },
       });
     } else if (data.role === "DELIVERY") {
-      await prisma.deliveryBoy.create({ data: { userId: user.id, vehicleType: data.vehicleType } });
+      await prisma.deliveryBoy.create({
+        data: {
+          userId: user.id,
+          vehicleType: data.vehicleType,
+          vehicleNumber: data.vehicleNumber,
+          licenseNumber: data.licenseNumber,
+          // status defaults to PENDING — rider can't go online until admin approves,
+          // same verification-gate pattern as vendors.
+        },
+      });
     }
 
     const token = signToken(user);

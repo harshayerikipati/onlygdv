@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import { View, Text, FlatList, StyleSheet, Switch } from "react-native";
+import { View, Text, FlatList, StyleSheet, Switch, Image } from "react-native";
 import client from "../../api/client";
+import { COLORS } from "../../theme";
 
 export default function ProductsScreen() {
   const [products, setProducts] = useState([]);
@@ -17,12 +18,18 @@ export default function ProductsScreen() {
 
   return (
     <FlatList
+      style={{ backgroundColor: COLORS.screenBg }}
       data={products}
       keyExtractor={(p) => p.id}
       contentContainerStyle={{ padding: 16 }}
       ListEmptyComponent={<Text style={styles.empty}>No products yet. Add your first one.</Text>}
       renderItem={({ item }) => (
         <View style={styles.row}>
+          {item.imageUrl ? (
+            <Image source={{ uri: item.imageUrl }} style={styles.thumb} />
+          ) : (
+            <View style={[styles.thumb, styles.thumbPlaceholder]} />
+          )}
           <View style={{ flex: 1 }}>
             <Text style={styles.name}>{item.name}</Text>
             <Text style={styles.price}>₹{item.price} · stock {item.stock}</Text>
@@ -35,8 +42,10 @@ export default function ProductsScreen() {
 }
 
 const styles = StyleSheet.create({
-  empty: { textAlign: "center", color: "#999", marginTop: 40 },
-  row: { flexDirection: "row", alignItems: "center", padding: 14, backgroundColor: "#f8f8f8", borderRadius: 10, marginBottom: 10 },
+  empty: { textAlign: "center", color: COLORS.muted, marginTop: 40 },
+  row: { flexDirection: "row", alignItems: "center", padding: 12, backgroundColor: COLORS.white, borderRadius: 14, marginBottom: 10 },
+  thumb: { width: 52, height: 52, borderRadius: 10, marginRight: 12 },
+  thumbPlaceholder: { backgroundColor: COLORS.border },
   name: { fontWeight: "600" },
   price: { color: "#888", marginTop: 4 },
 });

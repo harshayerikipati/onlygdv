@@ -33,10 +33,10 @@ router.get("/me", requireAuth, requireRole("VENDOR"), async (req, res, next) => 
 
 router.put("/me", requireAuth, requireRole("VENDOR"), async (req, res, next) => {
   try {
-    const { businessName, logoUrl } = req.body;
+    const { businessName, logoUrl, address } = req.body;
     const vendor = await prisma.vendor.update({
       where: { userId: req.user.id },
-      data: { businessName, logoUrl },
+      data: { businessName, logoUrl, address },
     });
     res.json(vendor);
   } catch (err) {

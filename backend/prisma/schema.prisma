@@ -26,6 +26,12 @@ enum VendorStatus {
   SUSPENDED
 }
 
+enum RiderStatus {
+  PENDING
+  APPROVED
+  SUSPENDED
+}
+
 enum OrderStatus {
   PLACED
   ACCEPTED
@@ -69,6 +75,9 @@ model Vendor {
   businessName   String
   type           VendorType
   logoUrl        String?
+  address        String?
+  lat            Float?
+  lng            Float?
   status         VendorStatus @default(PENDING)
   commissionRate Float        @default(10)
   createdAt      DateTime     @default(now())
@@ -105,32 +114,39 @@ model Product {
 }
 
 model DeliveryBoy {
-  id          String   @id @default(cuid())
-  userId      String   @unique
-  user        User     @relation(fields: [userId], references: [id])
-  vehicleType String?
-  isAvailable Boolean  @default(false)
-  currentLat  Float?
-  currentLng  Float?
+  id            String      @id @default(cuid())
+  userId        String      @unique
+  user          User        @relation(fields: [userId], references: [id])
+  vehicleType   String?
+  vehicleNumber String?
+  licenseNumber String?
+  status        RiderStatus @default(PENDING)
+  isAvailable   Boolean     @default(false)
+  currentLat    Float?
+  currentLng    Float?
 
   orders Order[]
 }
 
 model Order {
-  id           String      @id @default(cuid())
-  customerId   String
-  customer     User        @relation("CustomerOrders", fields: [customerId], references: [id])
-  vendorId     String
-  vendor       Vendor      @relation(fields: [vendorId], references: [id])
-  deliveryId   String?
-  deliveryBoy  DeliveryBoy? @relation(fields: [deliveryId], references: [id])
-  status       OrderStatus @default(PLACED)
-  subtotal     Float
-  deliveryFee  Float       @default(0)
-  total        Float
-  paymentMethod String     @default("COD")
-  paymentStatus String     @default("PENDING")
-  createdAt    DateTime    @default(now())
+  id              String       @id @default(cuid())
+  customerId      String
+  customer        User         @relation("CustomerOrders", fields: [customerId], references: [id])
+  vendorId        String
+  vendor          Vendor       @relation(fields: [vendorId], references: [id])
+  deliveryId      String?
+  deliveryBoy     DeliveryBoy? @relation(fields: [deliveryId], references: [id])
+  status          OrderStatus  @default(PLACED)
+  subtotal        Float
+  deliveryFee     Float        @default(0)
+  total           Float
+  paymentMethod   String       @default("COD")
+  paymentStatus   String       @default("PENDING")
+  deliveryAddress String?
+  deliveryLat     Float?
+  deliveryLng     Float?
+  customerPhone   String?
+  createdAt       DateTime     @default(now())
 
   items OrderItem[]
 }

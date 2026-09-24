@@ -7,7 +7,19 @@ const router = express.Router();
 // Customer: place an order
 router.post("/", requireAuth, requireRole("CUSTOMER"), async (req, res, next) => {
   try {
-    const { vendorId, items, deliveryFee = 0, paymentMethod = "COD" } = req.body;
+    const {
+      vendorId,
+      items,
+      deliveryFee = 0,
+      paymentMethod = "COD",
+      deliveryAddress,
+      deliveryLat,
+      deliveryLng,
+      customerPhone,
+    } = req.body;
+    if (!deliveryAddress) {
+      return res.status(400).json({ error: "A delivery address is required" });
+    }
     // items: [{ productId, qty }]
     const products = await prisma.product.findMany({
       where: { id: { in: items.map((i) => i.productId) } },
@@ -30,9 +42,13 @@ router.post("/", requireAuth, requireRole("CUSTOMER"), async (req, res, next) =>
         deliveryFee,
         total: subtotal + deliveryFee,
         paymentMethod,
-        items: { create: orderItemsData },
+        deliveryAddress,
+        deliveryLat,
+        deliveryLng,
+        customerPhone,
+      items: { create: orderItemsData },
       },
-      include: { items: true },
+      include: { items: true, vendor: true },
     });
 
     // Notify vendor in real time
@@ -49,7 +65,11 @@ router.get("/mine", requireAuth, requireRole("CUSTOMER"), async (req, res, next)
   try {
     const orders = await prisma.order.findMany({
       where: { customerId: req.user.id },
-      include: { items: true, vendor: { select: { businessName: true } } },
+      include: {
+        items: { include: { product: true } },
+        vendor: { select: { businessName: true, address: true } },
+        deliveryBoy: { include: { user: { select: { name: true, phone: true } } } },
+      },
       orderBy: { createdAt: "desc" },
     });
     res.json(orders);
@@ -64,7 +84,10 @@ router.get("/vendor", requireAuth, requireRole("VENDOR"), async (req, res, next)
     const vendor = await prisma.vendor.findUnique({ where: { userId: req.user.id } });
     const orders = await prisma.order.findMany({
       where: { vendorId: vendor.id },
-      include: { items: true, customer: { select: { name: true, phone: true } } },
+      include: {
+        items: { include: { product: true } },
+        customer: { select: { name: true, phone: true } },
+      },
       orderBy: { createdAt: "desc" },
     });
     res.json(orders);
